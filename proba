@@ -1,0 +1,62 @@
+#include "cyberpi.h"
+
+uint8_t x = 8;
+uint8_t y = 8;
+
+CyberPi cyber;
+void setup() {
+  Serial.begin(115200);
+  cyber.begin();
+  for (int i = 0; i < 8; i++) {
+    for (int j = 0; j < 8; j++) {
+      cyber.set_lcd_pixel((x * 8) + i, (y * 8) + j, 0xFFFF);
+    }
+  }
+}
+
+void loop() {
+  if (cyber.get_joystick_x() < 0) {
+
+    brisanje();
+    x = x - 1;
+    crtanje();
+  }
+  if (cyber.get_joystick_x() > 0) {
+    brisanje();
+    x = x + 1;
+    crtanje();
+  }
+  if (cyber.get_joystick_y() < 0) {
+    brisanje();
+    y = y - 1;
+    crtanje();
+  }
+  if (cyber.get_joystick_y() > 0) {
+    brisanje();
+    y = y + 1;
+    crtanje();
+  }
+  if (cyber.get_button_a() > 0) {
+    crtanje();
+  }
+
+  cyber.render_lcd();
+  delay(100);
+}
+void brisanje() {
+
+  for (int i = 0; i < 8; i++) {
+    for (int j = 0; j < 8; j++) {
+      cyber.set_lcd_pixel((x * 8) + i, (y * 8) + j, 0x0000);
+    }
+  }
+}
+
+void crtanje() {
+
+  for (int i = 0; i < 8; i++) {
+    for (int j = 0; j < 8; j++) {
+      cyber.set_lcd_pixel((x * 8) + i, (y * 8) + j, 0xFFFF);
+    }
+  }
+}
